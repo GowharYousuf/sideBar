@@ -1,36 +1,29 @@
-import React, { useState } from "react";
+import React from "react";
 import { 
   Drawer, 
   List, 
   ListItem, 
   ListItemText, 
   ListItemIcon, 
-  IconButton,
-  useMediaQuery,
   useTheme,
   Box,
-  Divider
+  Divider,
+  Toolbar
 } from "@mui/material";
-import { Home, Settings, Person, Menu as MenuIcon, Close as CloseIcon } from "@mui/icons-material";
+import { Home, Settings, Person } from "@mui/icons-material";
 import { Link, useLocation } from "react-router-dom";
 
-const drawerWidth = 250;
+const drawerWidth = 200;
 
 const Sidebar = () => {
-    const [mobileOpen, setMobileOpen] = useState(false);
     const theme = useTheme();
-    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-    const location = useLocation(); // To track the current route and set active link
+    const location = useLocation(); 
 
     const menuItems = [
         { text: "Home", path: "/", icon: <Home /> },
         { text: "Profile", path: "/profile", icon: <Person /> },
         { text: "Settings", path: "/settings", icon: <Settings /> }
     ];
-
-    const handleDrawerToggle = () => {
-        setMobileOpen(!mobileOpen);
-    };
 
     const drawer = (
         <Box sx={{ height: '100%', overflow: 'auto' }}>
@@ -46,21 +39,11 @@ const Sidebar = () => {
             >
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
                     <img 
-                        src="https://th.bing.com/th/id/OIP.TEYP4J-XZwm-XnT7Pnq7LAHaHa?w=1920&h=1920&rs=1&pid=ImgDetMain" 
+                        src="https://th.bing.com/th/id/OIP.4BVsODH1FltC2BMCBIHRHgAAAA?rs=1&pid=ImgDetMain" 
                         alt="Logo"
                         style={{ height: '30px', width: '150px', objectFit: 'contain' }} // Updated logo size
                     />
                 </Box>
-                {/* Menu Icon Button visible on mobile view */}
-                <IconButton 
-                    onClick={handleDrawerToggle}
-                    sx={{ 
-                        color: 'grey.700',
-                        display: { xs: 'block', sm: 'none' }, // Only visible on small screens
-                    }}
-                >
-                    {mobileOpen ? <CloseIcon /> : <MenuIcon />}
-                </IconButton>
             </Box>
 
             {/* Menu Items */}
@@ -79,7 +62,7 @@ const Sidebar = () => {
                                 color: 'grey.700',
                             },
                             '&:hover': {
-                                backgroundColor: 'rgba(0, 0, 0, 0.08)',
+                                backgroundColor: 'rgba(167, 162, 162, 0.08)',
                                 '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
                                     color: 'grey.900',
                                 }
@@ -118,39 +101,22 @@ const Sidebar = () => {
 
     return (
         <Box sx={{ display: 'flex' }}>
-            {/* Mobile Drawer */}
-            <Drawer
-                variant="temporary"
-                open={mobileOpen}
-                onClose={handleDrawerToggle}
-                ModalProps={{
-                    keepMounted: true,
-                }}
-                sx={{
-                    display: { xs: 'block', sm: 'none' }, // Only visible on small screens
-                    '& .MuiDrawer-paper': { 
-                        width: drawerWidth,
-                        bgcolor: 'background.paper',
-                        boxShadow: 3,
-                        borderRight: '2px solid rgba(0, 0, 0, 0.12)'
-                    },
-                }}
-            >
-                {drawer}
-            </Drawer>
-
             {/* Desktop Drawer */}
             <Drawer
                 variant="permanent"
                 sx={{
-                    display: { xs: 'none', sm: 'block' },
                     width: drawerWidth,
                     flexShrink: 0,
                     '& .MuiDrawer-paper': { 
                         width: drawerWidth,
                         bgcolor: 'background.paper',
                         boxShadow: 3,
-                        borderRight: '2px solid rgba(0, 0, 0, 0.12)'
+                        borderRight: '2px solid rgba(0, 0, 0, 0.12)',
+                        overflowX: 'hidden',
+                        transition: theme.transitions.create('width', {
+                            easing: theme.transitions.easing.sharp,
+                            duration: theme.transitions.duration.enteringScreen,
+                        }),
                     },
                 }}
             >
